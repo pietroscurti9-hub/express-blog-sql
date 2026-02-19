@@ -92,18 +92,25 @@ function destroy(req, res) {
 
     const id = Number(req.params.id);
 
-    const post = posts.find(post => post.id === id);
+    //Eliminiamo la pizza dal menu
+    connection.query('DELETE FROM posts WHERE id = ?', [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Failed to delete post' });
+        res.sendStatus(204)
+    });
 
-    if (!post) {
-        return res.status(404).send('Post non trovato');
-    }
 
-    // remove post from array
-    posts.splice(posts.indexOf(post), 1)
+    // const post = posts.find(post => post.id === id);
 
-    console.log(posts)
+    // if (!post) {
+    //     return res.status(404).send('Post non trovato');
+    // }
 
-    res.sendStatus(204)
+    // // remove post from array
+    // posts.splice(posts.indexOf(post), 1)
+
+    // console.log(posts)
+
+    // res.sendStatus(204)
 
 
 }
