@@ -1,11 +1,19 @@
+const connection = require('../data/db')
+
 const posts = require('../data/posts')
 
 function index(req, res) {
-    
-    pippo.get(); // errore 500 test
-    res.send({
-        total: posts.length,
-        posts
+
+    // pippo.get(); // errore 500 test
+    // res.send({
+    //     total: posts.length,
+    //     posts
+    // });
+    const sql = 'SELECT * FROM posts';
+    // eseguiamo la query!
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        res.json(results);
     });
 }
 
@@ -13,7 +21,7 @@ function show(req, res) {
 
     const id = Number(req.params.id); // 3
 
-    const post = posts.find(post => post.id === id); 
+    const post = posts.find(post => post.id === id);
 
     if (!post) {
         return res.status(404).send('Post non trovato');
@@ -29,7 +37,7 @@ function show(req, res) {
 
 
 function store(req, res) {
-    
+
     const newId = posts[posts.length - 1].id + 1;
     // Creiamo un nuovo oggetto post
     const newPost = {
@@ -49,7 +57,7 @@ function store(req, res) {
 }
 
 function update(req, res) {
-    
+
 
     const id = Number(req.params.id);
 
